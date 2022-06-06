@@ -1,5 +1,7 @@
 # iac-demo
 
+==NOTE==: You can run this instruction from a linux terminal or Windows WSL2 with a Linux terminal.
+
 ## Before provisioning, create a directory called ssh and run the following command:
 ```
 ssh-keygen -t rsa -b 4096 -C "adminuser" -f ssh/id_rsa
