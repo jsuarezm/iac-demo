@@ -63,6 +63,21 @@ resource "azurerm_network_security_group" "nsg1" {
   }
 }
 
+# Regla Inbound para http 
+resource "azurerm_network_security_rule" "web1" {
+  name                        = "HTTP"
+  priority                    = 1002
+  direction                   = "Inbound"
+  access                      = "Allow"
+  protocol                    = "Tcp"
+  source_port_range           = "*"
+  destination_port_range      = "80"
+  source_address_prefix       = "*"
+  destination_address_prefix  = "*"
+  resource_group_name         = "${azurerm_resource_group.rg1.name}"
+  network_security_group_name = "${azurerm_network_security_group.nsg1.name}"
+}
+
 # Create network interface
 resource "azurerm_network_interface" "nic1" {
   name                = "iac-nic"
@@ -112,6 +127,26 @@ resource "azurerm_linux_virtual_machine" "vm1" {
     sku       = "20_04-lts-gen2"
     version   = "latest"
   }
+}
+
+variable scfile{
+    type = string
+    default = "./scripts/bootstrap.sh"
+}
+
+# Correr el script de bootsptrap
+resource "azurerm_virtual_machine_extension" "vm1extension" {
+  name                 = "bootstraping"
+  virtual_machine_id   = azurerm_linux_virtual_machine.vm1.id
+  publisher            = "Microsoft.Azure.Extensions"
+  type                 = "CustomScript"
+  type_handler_version = "2.1"
+
+  protected_settings = <<PROT
+    {
+        "script": "${base64encode(file(var.scfile))}"
+    }
+PROT
 }
 
 output "resource_group_name" {
