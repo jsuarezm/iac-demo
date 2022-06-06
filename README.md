@@ -1,6 +1,6 @@
 # iac-demo
 
-==NOTE==: You can run this instruction from a linux terminal or Windows WSL2 with a Linux terminal.
+__NOTE: You can run this instruction from a linux terminal or Windows WSL2 with a Linux terminal.__
 
 ## Before provisioning, create a directory called ssh and run the following command:
 ```
